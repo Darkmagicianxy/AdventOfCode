@@ -1,0 +1,49 @@
+package day2;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+
+public class Part2 {
+
+
+
+    public long validPasswordCount(String fileToValidate) throws IOException {
+        Reader reader = new FileReader(fileToValidate);
+        BufferedReader br = new BufferedReader(reader);
+        long validPasswords = 0;
+
+        String line = br.readLine();
+        while (line != null) {
+            String[] spaceSplit = line.split(" ");
+            String positions = spaceSplit[0];
+            String [] positionSplit = positions.split("-");
+            int position1 = Integer.parseInt(positionSplit[0]);
+            int position2 = Integer.parseInt(positionSplit[1]);
+            String letter = spaceSplit[1].replace(":", "");
+            String password = spaceSplit[2];
+
+            String chatAtPosition1 = String.valueOf(password.charAt(position1 -1));
+            String chatAtPosition2 = String.valueOf(password.charAt(position2 -1));
+
+            if (chatAtPosition1.equals(letter) ^ chatAtPosition2.equals(letter)){
+                validPasswords++;
+            }
+
+            line = br.readLine();
+        }
+        br.close();
+
+        return validPasswords;
+    }
+
+
+
+
+    public static void main(String[] args) throws IOException {
+        Part2 pp = new Part2();
+        long validPasswordCount = pp.validPasswordCount("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day2\\passwords.txt");
+        System.out.println(validPasswordCount);
+    }
+}
