@@ -1,0 +1,72 @@
+package day3;
+
+
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+
+public class Part1Test {
+
+    @Test
+    public void testSimpleCaseWith0TreeHit() throws IOException {
+        //Given
+        Part1 subject = new Part1();
+
+        //When
+        long result = subject.countTrees("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day3\\test-map-1.txt", 1, 2);
+
+        //Then
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testSimpleCaseWith1TreeHit() throws IOException {
+        //Given
+        Part1 subject = new Part1();
+
+        //When
+        long result = subject.countTrees("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day3\\test-map-1.txt", 1, 1);
+
+        //Then
+        assertEquals(2, result);
+    }
+
+    @Test
+    public void testOverflowCaseWith1TreeHit() throws IOException {
+        //Given
+        Part1 subject = new Part1();
+
+        //When
+        long result = subject.countTrees("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day3\\test-map-1.txt", 6, 1);
+
+        //Then
+        assertEquals(2, result);
+    }
+
+    @Test
+    public void testRight2Down2() throws IOException {
+        //Given
+        Part1 subject = new Part1();
+
+        //When
+        long result = subject.countTrees("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day3\\test-map-1.txt", 2, 2);
+
+        //Then
+        assertEquals(1, result);
+    }
+
+
+    @Test
+    public void testRight4Down1() throws IOException {
+        //Given
+        Part1 subject = new Part1();
+
+        //When
+        long result = subject.countTrees("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day3\\test-map-1.txt", 4, 1);
+
+        //Then
+        assertEquals(1, result);
+    }
+}
