@@ -1,0 +1,55 @@
+package day3;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+public class Part1 {
+
+    public long countTrees(String file, int right, int down) throws IOException {
+        long treesCount = 0;
+
+        List<String> lines = Files.readAllLines(Paths.get(file));
+        int lineCount = lines.size();
+
+        int iterationNumber = 0;
+        for(int lineUpTo = down; lineUpTo < lineCount; lineUpTo+= down){
+            iterationNumber ++;
+            String line = lines.get(lineUpTo);
+
+            char charOfInterest;
+            int nextRightMove = right * iterationNumber;
+            int lineLength = line.length(); // Upper number
+            /* 1 - 12(boundry)
+             * 13 = 1, 14 = 2
+             * 0-11(boundry) 12 = 0, 13 = 1
+             */
+
+            if(nextRightMove >= lineLength){
+                charOfInterest = line.charAt(nextRightMove % lineLength);
+            } else {
+                charOfInterest = line.charAt(nextRightMove);
+            }
+
+            if (charOfInterest == '#'){
+                treesCount++;
+            }
+        }
+
+        return treesCount;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Part1 pp = new Part1();
+        String file = "C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day3\\map2.txt";
+        long treeCounta = pp.countTrees(file, 3, 1);
+        long treeCountb = pp.countTrees(file, 1, 1);
+        long treeCountc = pp.countTrees(file, 5, 1);
+        long treeCountd = pp.countTrees(file, 7, 1);
+        long treeCounte = pp.countTrees(file, 1, 2);
+        System.out.println(treeCounta * treeCountb * treeCountc* treeCountd* treeCounte);
+    }
+
+
+}
