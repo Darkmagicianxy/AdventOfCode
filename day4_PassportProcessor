@@ -1,0 +1,91 @@
+package day4;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class PassportProcessor {
+
+    public List<String> parsePassports(String path) throws IOException {
+        List<String> passports = new ArrayList<>();
+        List<String> allLines = Files.readAllLines(Paths.get(path));
+
+        StringBuilder builder = new StringBuilder();
+
+        for (String line: allLines){
+            if(line.equals("")){
+                passports.add(builder.toString().trim());
+                builder = new StringBuilder();
+            } else {
+                builder.append(line);
+                builder.append(" ");
+            }
+        }
+        // Hack to deal with final line
+        if(!builder.toString().equals("")){
+            passports.add(builder.toString().trim());
+        }
+
+        return passports;
+    }
+
+    public int validPassportCountPart1(List<String> passports){
+        int validCount = 0;
+
+        for (String passport: passports) {
+            if(passportContainsRequiredFields(passport)){
+                validCount++;
+            }
+        }
+
+        return validCount;
+    }
+
+    private boolean passportContainsRequiredFields(String passport){
+        return passport.contains("byr") &&
+                        passport.contains("iyr") &&
+                        passport.contains("eyr") &&
+                        passport.contains("hgt") &&
+                        passport.contains("hcl") &&
+                        passport.contains("ecl") &&
+                        passport.contains("pid");
+
+    }
+
+    public int validPassportCountPart2(List< String > passports) {
+        int validCount = 0;
+
+        PassportValidator validator = new PassportValidator();
+        for (String passport: passports) {
+            Map<String, String> fieldNamesToValues = new HashMap<>();
+            String[] fields = passport.split(" ");
+
+            //Convert each passport to map of names -> values
+            for(String field : fields){
+                String[] fieldNameValueSplit = field.split(":");
+                String fieldName = fieldNameValueSplit[0];
+                String fieldValue = fieldNameValueSplit[1];
+                fieldNamesToValues.put(fieldName, fieldValue);
+            }
+            //Validate the passport
+            if (
+                    validator.isBirthYearValid(fieldNamesToValues.get("byr")) &&
+                            validator.isIssueYear(fieldNamesToValues.get("iyr")) &&
+                            validator.isExpirationYear(fieldNamesToValues.get("eyr")) &&
+                            validator.isHeightValid(fieldNamesToValues.get("hgt")) &&
+                            validator.isHcValid(fieldNamesToValues.get("hcl")) &&
+                            validator.isEyeColourValid(fieldNamesToValues.get("ecl")) &&
+                            validator.isPidValid(fieldNamesToValues.get("pid"))) {
+                validCount++;
+            }
+
+
+        }
+
+        return validCount;
+    }
+}
