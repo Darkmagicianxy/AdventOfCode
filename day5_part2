@@ -1,0 +1,17 @@
+package day5;
+
+import java.io.IOException;
+import java.util.List;
+
+public class Part2 {
+    public static void main(String[] args) throws IOException {
+        BoardingPassParser parser = new BoardingPassParser();
+        List< String > passes = parser.parsePasses("C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day5\\input.txt");
+        BoardingPassProcessor processor = new BoardingPassProcessor();
+        List< Long > missingSeats = processor.getMissingSeat(passes);
+        System.out.println(missingSeats);
+
+
+
+    }
+}
