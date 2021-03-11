@@ -1,0 +1,106 @@
+package day5;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+
+public class BoardingPassProcessor {
+
+    public long findHighestSeatId(List<String> passes) {
+        long highestSeatId = 0;
+        for (String pass : passes ){
+            long currentSeatId = getSeatId(pass);
+            if (currentSeatId > highestSeatId){
+                highestSeatId = currentSeatId;
+            }
+        }
+        return highestSeatId;
+    }
+
+    public long findLowestSeatId(List<String> passes) {
+        long lowestSeatId = 999999; // What is the highest seat number if trying lowest don't start 0
+        for (String pass : passes ){
+            long currentSeatId = getSeatId(pass);
+            if (currentSeatId < lowestSeatId){
+                lowestSeatId = currentSeatId;
+            }
+        }
+        return lowestSeatId;
+    }
+
+    public List<Long> getMissingSeat(List<String> passes){
+        long lowestSeatId = findLowestSeatId(passes);
+        long highestSeatId = findHighestSeatId(passes);
+        List<Long> allSeatIds = generateLongList(lowestSeatId, highestSeatId);
+        List<Long> providedSeatIds = getSeatIds(passes);
+
+        allSeatIds.removeAll(providedSeatIds);
+        //This is actually only the missing ones now that we have removed provided
+        return allSeatIds;
+    }
+
+// TODO Make above method use this
+    public List<Long> getSeatIds(List<String> passes){
+        List<Long> seatIds = new ArrayList<>();
+
+        for(String pass: passes){
+            long seatId = getSeatId(pass);
+            seatIds.add(seatId);
+        }
+
+        return seatIds;
+    }
+
+
+    public long getRow(String pass){
+        String[] letters = pass.split("");
+
+        return decodeNumber(letters, 127, "F", "B");
+    }
+
+    public long getColumn(String pass){
+        String[] letters = pass.split("");
+
+        return decodeNumber(letters, 7, "L", "R");
+    }
+
+    public long getSeatId( String pass){
+
+        long column = getColumn(pass);
+        long row = getRow(pass);
+
+        return row * 8 + column;
+
+    }
+
+    private List<Long> generateLongList(Long minNumber, Long maxNumber){
+        List<Long> results = new ArrayList<>();
+        Long currentNumber = minNumber;
+
+        while(currentNumber <= maxNumber){
+            results.add(currentNumber);
+            currentNumber++;
+        }
+
+        return results;
+    }
+
+    private long decodeNumber(String[] letters, int maxValue, String lowerIndicator, String upperIndicator) {
+        long lowerVal = 0;
+        long upperVal = maxValue;
+
+        for (String letter : letters) {
+            if (lowerVal == upperVal) {
+                break;
+            }
+
+            if (letter.equals(lowerIndicator)) {
+                upperVal = upperVal - ((upperVal - lowerVal) / 2) - 1;
+            } else if (letter.equals(upperIndicator)) {
+                lowerVal = lowerVal + ((upperVal - lowerVal) / 2) + 1;
+            }
+        }
+        return lowerVal;
+    }
+}
