@@ -1,0 +1,20 @@
+package day4;
+
+import java.io.IOException;
+import java.util.List;
+
+public class Part2 {
+    
+    public static void main(String[] args) throws IOException {
+        PassportProcessor processing = new PassportProcessor();
+        String file = "C:\\Users\\joshua.davies\\Exercism\\java\\ReportRepair\\src\\day4\\passport.txt";
+
+        List< String > passports = processing.parsePassports(file);
+
+        int validPassportCount = processing.validPassportCountPart2(passports);
+
+        System.out.println(validPassportCount);
+    }
+
+
+}
